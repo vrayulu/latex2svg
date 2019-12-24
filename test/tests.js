@@ -1,5 +1,5 @@
-var expect  = require('chai').expect;
-var request = require('request');
+const expect  = require('chai').expect;
+const request = require('request');
 
 it('Mock test', function(done) {
     request('http://localhost/convert?equation=%5Csin%5Ctheta' , function(error, response, body) {
