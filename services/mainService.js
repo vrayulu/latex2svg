@@ -50,35 +50,41 @@ class LatexService {
 
     async convert(req, res) {
         let that = this;
-        const equation = req.query.equation;
-        let color = "black";
-        const isPNG = /\.png$/.test(equation);
-        const normalizedEquation = equation.replace(/\.(svg|png)$/, "");
+        let equation = req.query.equation;
+        if (!equation) {
+          equation = req.body.equation;
+        }
+        if (!equation) {
+          res.status(400).send('Bad Request');
+        } else {
+          let color = "black";
+          const isPNG = /\.png$/.test(equation);
+          const normalizedEquation = equation.replace(/\.(svg|png)$/, "");
 
-        try {
-            const svgString = that.tex2svg(normalizedEquation, color);
-            let imageData = svgString;
-        
-            res.setHeader("cache-control", "s-maxage=604800, maxage=604800");
-        
-            // render equation
-            if (isPNG) {
-              imageData = await that.svg2png(svgString);
-              res.contentType("image/png");
-            } else {
-              res.contentType("image/svg+xml");
-              res.write(`<?xml version="1.0" standalone="no" ?>
-                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-              `);
-            }
-            res.end(imageData);
-        } catch (err) {
-            res.write(
-              '<svg xmlns="http://www.w3.org/2000/svg"><text x="0" y="15" font-size="15">'
-            );
-            res.write(err);
-            res.end("</text></svg>");
+          try {
+              const svgString = that.tex2svg(normalizedEquation, color);
+              let imageData = svgString;
+              res.setHeader("cache-control", "s-maxage=604800, maxage=604800");
+              // render equation
+              if (isPNG) {
+                imageData = await that.svg2png(svgString);
+                res.contentType("image/png");
+              } else {
+                res.contentType("image/svg+xml");
+                res.write(`<?xml version="1.0" standalone="no" ?>
+                  <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+                `);
+              }
+              res.end(imageData);
+          } catch (err) {
+              
+              res.write(
+                '<svg xmlns="http://www.w3.org/2000/svg"><text x="0" y="15" font-size="15">'
+              );
+              res.write(err);
+              res.end("</text></svg>");
           }
+        }
     }
 
 }

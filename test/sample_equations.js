@@ -1,6 +1,9 @@
 const expect  = require('chai').expect;
 const request = require('request');
 const fs = require('fs');
+const latexService = require('../services/mainService');
+const mock = require('mock-require');
+const httpMocks = require('node-mocks-http');
 
 const testEquations = [
     {title: "Area of circle", "latex": "A = \\pi r^2"},
@@ -43,123 +46,65 @@ var getFilename = function (eq) {
     return title;
 };
 
-it('Test Sample Equations', function(done) {
-    testEquations.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/equations/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
+var makeAPICall = function (eq, folder) {
+    let title = getFilename(eq);
+    let encodedEquation = encodeURIComponent(eq.latex);
+    download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/' + folder + '/' + title + '.png', function(){
+        console.log('downloaded: ' + title);
     });
+};
+
+it('Test Sample Equations', function(done) {
+    testEquations.forEach(function (eq) { makeAPICall(eq, 'equations'); });
     done();
 });
 
 it('Test Greek Symbols', function(done) {
-    greekSymbols.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/greekSymbols/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    greekSymbols.forEach(function (eq) { makeAPICall(eq, 'greekSymbols'); });
     done();
 });
 
 it('Test Binary Symbols', function(done) {
-    binarySymbols.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/binarySymbols/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    binarySymbols.forEach(function (eq) { makeAPICall(eq, 'binarySymbols'); });
     done();
 });
 
 it('Test Arrows', function(done) {
-    arrows.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/arrows/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    arrows.forEach(function (eq) { makeAPICall(eq, 'arrows'); });
     done();
 });
 
 it('Test Misc Symbols', function(done) {
-    miscSymbols.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/miscSymbols/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    miscSymbols.forEach(function (eq) { makeAPICall(eq, 'miscSymbols'); });
     done();
 });
 
 it('Test Trigonometry Equations', function(done) {
-    trigEquations.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/trigEquations/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    trigEquations.forEach(function (eq) { makeAPICall(eq, 'trigEquations'); });
     done();
 });
 
 it('Test Superscript & Subscript Equations', function(done) {
-    supsubEquations.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/supsubEquations/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    supsubEquations.forEach(function (eq) { makeAPICall(eq, 'supsubEquations'); });
     done();
 });
 
 it('Test Root Equations', function(done) {
-    rootEquations.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/rootEquations/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    rootEquations.forEach(function (eq) { makeAPICall(eq, 'rootEquations'); });
     done();
 });
 
 it('Test Fractions', function(done) {
-    fractions.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/fractions/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    fractions.forEach(function (eq) { makeAPICall(eq, 'fractions'); });
     done();
 });
 
 it('Test Misc Equations', function(done) {
-    miscEquations.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/miscEquations/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    miscEquations.forEach(function (eq) { makeAPICall(eq, 'miscEquations'); });
     done();
 });
 
 it('Test Advanced Equations', function(done) {
-    advancedEquations.forEach(function (eq) {
-        let title = getFilename(eq);
-        let encodedEquation = encodeURIComponent(eq.latex);
-        download('http://localhost/convert?equation=' + encodedEquation + '.png', 'test/sampleOutput/advancedEquations/' + title + '.png', function(){
-            console.log('downloaded: ' + title);
-        });
-    });
+    advancedEquations.forEach(function (eq) { makeAPICall(eq, 'advancedEquations'); });
     done();
 });

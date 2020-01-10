@@ -12,4 +12,8 @@ module.exports = app => {
   app.get("/convert", (req, res) =>
     latexService.convert(req, res)
   );
+
+  app.post("/convert", (req, res) =>
+    latexService.convert(req, res)
+  );
 };
