@@ -19,7 +19,7 @@
     "helmet": "^3.21.2",
     "mathjax-full": "^3.0.0",
     "memory-cache": "^0.2.0",
-    "svg2img": "^0.6.1"
+    "svg2img": "^1.0.0-beta.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
